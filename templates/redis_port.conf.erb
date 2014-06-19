@@ -81,9 +81,12 @@ databases <%= @redis_databases %>
 #
 #   Note: you can disable saving at all commenting all the save lines.
 
-save 900 1
-save 300 10
-save 60 10000
+<%- if @redis_snapshotting
+      @redis_snapshotting.each do |seconds,changes|
+%>
+save <%= @seconds %> <%= @changes %>
+<%-   end %>
+<%- end %>
 
 # Compress string objects using LZF when dump .rdb databases?
 # For default that's set to 'yes' as it's almost always a win.
@@ -214,7 +217,7 @@ requirepass <%= @redis_password %>
 # It is also possilbe to completely kill a command renaming it into
 # an empty string:
 #
-# rename-command CONFIG 
+# rename-command CONFIG
 
 ################################### LIMITS ####################################
 

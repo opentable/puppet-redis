@@ -96,7 +96,8 @@ define redis::instance (
   $redis_is_slave = $redis::params::redis_is_slave,
   $redis_slaveof_master_ip = $redis::params::redis_slaveof_master_ip,
   $redis_slaveof_master_port = $redis::params::redis_slaveof_master_port,
-  $redis_slave_priority = $redis::params::redis_slave_priority
+  $redis_slave_priority = $redis::params::redis_slave_priority,
+  $redis_snapshotting = $redis::params::redis_snapshotting
   ) {
 
   # Using Exec as a dependency here to avoid dependency cyclying when doing
