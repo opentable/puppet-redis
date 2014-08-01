@@ -97,7 +97,8 @@ define redis::instance (
   $redis_slaveof_master_ip = $redis::params::redis_slaveof_master_ip,
   $redis_slaveof_master_port = $redis::params::redis_slaveof_master_port,
   $redis_slave_priority = $redis::params::redis_slave_priority,
-  $redis_snapshotting = $redis::params::redis_snapshotting
+  $redis_snapshotting = $redis::params::redis_snapshotting,
+  $manage_config_file = $redis::params::manage_config_file
   ) {
 
   # Using Exec as a dependency here to avoid dependency cyclying when doing
@@ -136,12 +137,13 @@ define redis::instance (
     content => template('redis/redis.init.erb'),
     notify  => Service["redis-${redis_port}"],
   }
+
   file { "redis_port_${redis_port}.conf":
     ensure  => present,
     path    => "/etc/redis/${redis_port}.conf",
     mode    => '0644',
     content => template('redis/redis_port.conf.erb'),
-    replace => false,
+    replace => $manage_config_file,
   }
 
   service { "redis-${redis_port}":
