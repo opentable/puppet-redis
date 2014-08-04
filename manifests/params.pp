@@ -32,5 +32,5 @@ class redis::params {
   $redis_slaveof_master_port = 6379
   $redis_slave_priority = 100
   $redis_snapshotting = { '900' => '1', '300' => '10', '60' => '10000' }
-
+  $manage_config_file = false
 }

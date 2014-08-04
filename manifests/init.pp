@@ -115,7 +115,8 @@ class redis (
   $redis_slaveof_master_ip = $redis::params::redis_slaveof_master_ip,
   $redis_slaveof_master_port = $redis::params::redis_slaveof_master_port,
   $redis_slave_priority = $redis::params::redis_slave_priority,
-  $redis_snapshotting = $redis::params::redis_snapshotting
+  $redis_snapshotting = $redis::params::redis_snapshotting,
+  $manage_config_file = $redis::params::manage_config_file
 ) inherits redis::params {
 
   include wget
@@ -140,7 +141,8 @@ class redis (
      redis_slaveof_master_ip       => $redis_slaveof_master_ip,
      redis_slaveof_master_port     => $redis_slaveof_master_port,
      redis_slave_priority          => $redis_slave_priority,
-     redis_snapshotting            => $redis_snapshotting
+     redis_snapshotting            => $redis_snapshotting,
+     manage_config_file            => $manage_config_file
  }
 
   group { 'redis':
