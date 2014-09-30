@@ -10,7 +10,7 @@ DAEMON=/usr/bin/redis-server
 CLIEXEC="<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-cli -h $REDIS_BIND_ADDRESS -p $REDIS_PORT <%= @redis_password ? '-a ' + @redis_password : '' %>"
 PIDFILE="/var/run/redis/redis_${REDIS_PORT}.pid"
 CONF="/etc/redis/${REDIS_PORT}.conf"
-EXEC="start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --chuid $UID:$GID -- $CONF"
+EXEC="start-stop-daemon --start --quiet --pidfile $PIDFILE -m --exec $DAEMON --chuid $UID:$GID -- $CONF"
 
 ###############
 
@@ -36,6 +36,9 @@ start()
     else
         echo "Starting Redis server..."
         $EXEC
+        sleep 2
+        PID=`ps ax | grep 'redis-server' | grep -v 'grep' | awk '{print $1}'`
+        echo $PID > $PIDFILE;
     fi
 }
 
