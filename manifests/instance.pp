@@ -60,12 +60,28 @@
 #   Port that master instance is listening on.
 #   Default: 6379
 #
+# [*redis_repl_backlog_size*]
+#   Size of backlog buffer used to accumulate slave data when slaves are disconnected.
+#   Default: 1Mb
+#
 # [*redis_slave_priority*]
 #   Used by Redis Sentinel to select a slave to promote to master.
 #   A slave with a low priority number is considered better for promotion.
 #   However a special priority of 0 marks the slave as not able to perform
 #   the role of master.
 #   Default: 100
+#
+# [*redis_slave_output_buffer_hard_limit*]
+#   Hard limit on the size of the slave replication buffer.
+#   Default: 256mb
+#
+# [*redis_slave_output_buffer_soft_limit*]
+#   Soft limit on the size of the slave replication buffer.
+#   Default: 64mb
+#
+# [*redis_slave_output_buffer_soft_limit_max_interval*]
+#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.  
+#   Default: 60s
 #
 # === Examples
 #
@@ -96,7 +112,11 @@ define redis::instance (
   $redis_is_slave = $redis::params::redis_is_slave,
   $redis_slaveof_master_ip = $redis::params::redis_slaveof_master_ip,
   $redis_slaveof_master_port = $redis::params::redis_slaveof_master_port,
+  $redis_repl_backlog_size = $redis::params::redis_repl_backlog_size,
   $redis_slave_priority = $redis::params::redis_slave_priority,
+  $redis_slave_output_buffer_hard_limit = $redis::params::redis_slave_output_buffer_hard_limit,
+  $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
+  $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
   $manage_config_file = $redis::params::manage_config_file
   ) {
