@@ -147,26 +147,26 @@ class redis (
 
   # Install default instance
   redis::instance { 'redis-default':
-     redis_port                                           => $redis_port,
-     redis_bind_address                                   => $redis_bind_address,
-     redis_max_memory                                     => $redis_max_memory,
-     redis_max_clients                                    => $redis_max_clients,
-     redis_timeout                                        => $redis_timeout,
-     redis_loglevel                                       => $redis_loglevel,
-     redis_databases                                      => $redis_databases,
-     redis_slowlog_log_slower_than                        => $redis_slowlog_log_slower_than,
-     redis_slowlog_max_len                                => $redis_slowlog_max_len,
-     redis_password                                       => $redis_password,
-     redis_is_slave                                       => $redis_is_slave,
-     redis_slaveof_master_ip                              => $redis_slaveof_master_ip,
-     redis_slaveof_master_port                            => $redis_slaveof_master_port,
-     redis_repl_backlog_size                              => $redis_repl_backlog_size,
-     redis_slave_priority                                 => $redis_slave_priority,
-     redis_slave_output_buffer_hard_limit                 => $redis_slave_output_buffer_hard_limit,
-     redis_slave_output_buffer_soft_limit                 => $redis_slave_output_buffer_soft_limit,
-     redis_slave_output_buffer_soft_limit_max_interval    => $redis_slave_output_buffer_soft_limit_max_interval,
-     redis_snapshotting                                   => $redis_snapshotting,
-     manage_config_file                                   => $manage_config_file
+     redis_port                                        => $redis_port,
+     redis_bind_address                                => $redis_bind_address,
+     redis_max_memory                                  => $redis_max_memory,
+     redis_max_clients                                 => $redis_max_clients,
+     redis_timeout                                     => $redis_timeout,
+     redis_loglevel                                    => $redis_loglevel,
+     redis_databases                                   => $redis_databases,
+     redis_slowlog_log_slower_than                     => $redis_slowlog_log_slower_than,
+     redis_slowlog_max_len                             => $redis_slowlog_max_len,
+     redis_password                                    => $redis_password,
+     redis_is_slave                                    => $redis_is_slave,
+     redis_slaveof_master_ip                           => $redis_slaveof_master_ip,
+     redis_slaveof_master_port                         => $redis_slaveof_master_port,
+     redis_repl_backlog_size                           => $redis_repl_backlog_size,
+     redis_slave_priority                              => $redis_slave_priority,
+     redis_slave_output_buffer_hard_limit              => $redis_slave_output_buffer_hard_limit,
+     redis_slave_output_buffer_soft_limit              => $redis_slave_output_buffer_soft_limit,
+     redis_slave_output_buffer_soft_limit_max_interval => $redis_slave_output_buffer_soft_limit_max_interval,
+     redis_snapshotting                                => $redis_snapshotting,
+     manage_config_file                                => $manage_config_file
  }
 
   group { 'redis':
