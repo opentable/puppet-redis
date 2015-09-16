@@ -13,7 +13,6 @@
 # Copyright 2012 Thomas Van Doren, unless otherwise noted.
 #
 class redis::params {
-
   $redis_port = '6379'
   $redis_bind_address = false
   $version = '2.8.3'
@@ -30,7 +29,7 @@ class redis::params {
   $redis_is_slave = false
   $redis_slaveof_master_ip = 'localhost'
   $redis_slaveof_master_port = 6379
-  $redis_repl_backlog_size = 1mb
+  $redis_repl_backlog_size = undef
   $redis_slave_priority = 100
   $redis_slave_output_buffer_hard_limit = 256mb
   $redis_slave_output_buffer_soft_limit = 64mb
