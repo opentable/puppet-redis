@@ -182,7 +182,9 @@ slave-read-only yes
 # The backlog is only allocated once there is at least a slave connected.
 #
 # repl-backlog-size 1mb
+<% if @redis_repl_backlog_size %>
 repl-backlog-size <%= @redis_repl_backlog_size %>
+<% end %>
 
 # The slave priority is an integer number published by Redis in the INFO output.
 # It is used by Redis Sentinel in order to select a slave to promote into a
