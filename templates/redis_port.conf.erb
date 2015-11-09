@@ -84,7 +84,7 @@ databases <%= @redis_databases %>
 <%- if @redis_snapshotting
       @redis_snapshotting.each do |seconds,changes|
 %>
-save <%= @seconds %> <%= @changes %>
+save <%= seconds %> <%= changes %>
 <%-   end %>
 <%- end %>
 

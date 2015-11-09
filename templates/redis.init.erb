@@ -6,7 +6,7 @@ REDIS_BIND_ADDRESS="<%= @redis_bind_address ? @redis_bind_address : '127.0.0.1' 
 UID=redis
 GID=redis
 
-DAEMON=/usr/bin/redis-server
+DAEMON=<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-server
 CLIEXEC="<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-cli -h $REDIS_BIND_ADDRESS -p $REDIS_PORT <%= @redis_password ? '-a ' + @redis_password : '' %>"
 PIDFILE="/var/run/redis/redis_${REDIS_PORT}.pid"
 CONF="/etc/redis/${REDIS_PORT}.conf"
@@ -86,7 +86,7 @@ status()
 
 case "$1" in
     start)
-  start 
+  start
   ;;
     stop)
   stop
