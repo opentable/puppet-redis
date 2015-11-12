@@ -80,7 +80,7 @@
 #   Default: 64mb
 #
 # [*redis_slave_output_buffer_soft_limit_max_interval*]
-#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.  
+#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.
 #   Default: 60s
 #
 # === Examples
@@ -155,7 +155,7 @@ define redis::instance (
     path    => "/etc/init.d/redis_${redis_port}",
     mode    => '0755',
     content => template('redis/redis.init.erb'),
-    notify  => Service["redis-${redis_port}"],
+    replace => $manage_config_file,
   }
 
   file { "redis_port_${redis_port}.conf":
@@ -171,6 +171,6 @@ define redis::instance (
     name      => "redis_${redis_port}",
     enable    => true,
     require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
-    subscribe => File["redis_port_${redis_port}.conf"],
+    subscribe => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"],
   }
 }
