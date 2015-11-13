@@ -155,7 +155,7 @@ define redis::instance (
     path    => "/etc/init.d/redis_${redis_port}",
     mode    => '0755',
     content => template('redis/redis.init.erb'),
-    replace => $manage_config_file,
+    replace => true,
   }
 
   file { "redis_port_${redis_port}.conf":
@@ -163,14 +163,24 @@ define redis::instance (
     path    => "/etc/redis/${redis_port}.conf",
     mode    => '0644',
     content => template('redis/redis_port.conf.erb'),
-    replace => $manage_config_file,
+    replace => true,
   }
 
-  service { "redis-${redis_port}":
-    ensure    => running,
-    name      => "redis_${redis_port}",
-    enable    => true,
-    require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
-    subscribe => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"],
+  if $manage_config_file {
+    service { "redis-${redis_port}":
+      ensure    => running,
+      name      => "redis_${redis_port}",
+      enable    => true,
+      require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
+      subscribe => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"],
+    }
+  } else {
+    service { "redis-${redis_port}":
+      ensure    => running,
+      name      => "redis_${redis_port}",
+      enable    => true,
+      require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
+    }
   }
+
 }
