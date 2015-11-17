@@ -118,7 +118,7 @@ define redis::instance (
   $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
-  $manage_config_file = $redis::params::manage_config_file
+  $restart_service_on_change = $redis::params::restart_service_on_change
   ) {
 
   # Using Exec as a dependency here to avoid dependency cyclying when doing
@@ -166,7 +166,7 @@ define redis::instance (
     replace => true,
   }
 
-  if $manage_config_file {
+  if $restart_service_on_change {
     service { "redis-${redis_port}":
       ensure    => running,
       name      => "redis_${redis_port}",

@@ -92,7 +92,7 @@
 #   Default: 64mb
 #
 # [*redis_slave_output_buffer_soft_limit_max_interval*]
-#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.  
+#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.
 #   Default: 60s
 #
 # === Examples
@@ -136,7 +136,7 @@ class redis (
   $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
-  $manage_config_file = $redis::params::manage_config_file
+  $restart_service_on_change = $redis::params::restart_service_on_change
 ) inherits redis::params {
 
   include wget
@@ -166,7 +166,7 @@ class redis (
      redis_slave_output_buffer_soft_limit              => $redis_slave_output_buffer_soft_limit,
      redis_slave_output_buffer_soft_limit_max_interval => $redis_slave_output_buffer_soft_limit_max_interval,
      redis_snapshotting                                => $redis_snapshotting,
-     manage_config_file                                => $manage_config_file
+     restart_service_on_change                         => $restart_service_on_change
  }
 
   group { 'redis':
