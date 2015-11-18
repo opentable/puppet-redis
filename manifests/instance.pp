@@ -80,7 +80,7 @@
 #   Default: 64mb
 #
 # [*redis_slave_output_buffer_soft_limit_max_interval*]
-#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.  
+#   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.
 #   Default: 60s
 #
 # === Examples
@@ -118,7 +118,7 @@ define redis::instance (
   $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
-  $manage_config_file = $redis::params::manage_config_file
+  $restart_service_on_change = $redis::params::restart_service_on_change
   ) {
 
   # Using Exec as a dependency here to avoid dependency cyclying when doing
@@ -155,7 +155,7 @@ define redis::instance (
     path    => "/etc/init.d/redis_${redis_port}",
     mode    => '0755',
     content => template('redis/redis.init.erb'),
-    notify  => Service["redis-${redis_port}"],
+    replace => true,
   }
 
   file { "redis_port_${redis_port}.conf":
@@ -163,14 +163,24 @@ define redis::instance (
     path    => "/etc/redis/${redis_port}.conf",
     mode    => '0644',
     content => template('redis/redis_port.conf.erb'),
-    replace => $manage_config_file,
+    replace => true,
   }
 
-  service { "redis-${redis_port}":
-    ensure    => running,
-    name      => "redis_${redis_port}",
-    enable    => true,
-    require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
-    subscribe => File["redis_port_${redis_port}.conf"],
+  if $restart_service_on_change {
+    service { "redis-${redis_port}":
+      ensure    => running,
+      name      => "redis_${redis_port}",
+      enable    => true,
+      require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
+      subscribe => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"],
+    }
+  } else {
+    service { "redis-${redis_port}":
+      ensure    => running,
+      name      => "redis_${redis_port}",
+      enable    => true,
+      require   => [ File["redis_port_${redis_port}.conf"], File["redis-init-${redis_port}"], File["redis-lib-port-${redis_port}"] ],
+    }
   }
+
 }
