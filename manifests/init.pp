@@ -150,6 +150,7 @@ class redis (
      redis_port                                        => $redis_port,
      redis_bind_address                                => $redis_bind_address,
      redis_max_memory                                  => $redis_max_memory,
+     redis_maxmemory_policy                            => $redis_maxmemory_policy,
      redis_max_clients                                 => $redis_max_clients,
      redis_timeout                                     => $redis_timeout,
      redis_loglevel                                    => $redis_loglevel,
