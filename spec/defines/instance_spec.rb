@@ -43,6 +43,21 @@ describe 'redis::instance', :type => 'define' do
     end # it
   end # context
 
+  context "With maxmemory and maxmemory-policy set" do
+    let :params do
+      {
+        :redis_max_memory => '4gb',
+        :redis_maxmemory_policy => 'allkeys-lru'
+      }
+    end # let
+
+    it do
+      should contain_file('redis_port_6379.conf').with_content(/^maxmemory-policy allkeys-lru/)
+      should contain_file('redis_port_6379.conf').with_content(/^maxmemory 4gb/)
+    end # it
+  end # context
+
+
   context "With a non-default port parameter" do
     let :params do
       {
