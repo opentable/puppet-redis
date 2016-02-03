@@ -37,4 +37,5 @@ class redis::params {
   $redis_slave_output_buffer_soft_limit_max_interval = 60
   $redis_snapshotting = { '900' => '1', '300' => '10', '60' => '10000' }
   $restart_service_on_change = false
+  $manage_config_files = false
 }
