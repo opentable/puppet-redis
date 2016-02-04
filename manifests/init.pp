@@ -120,6 +120,7 @@ class redis (
   $redis_port = $redis::params::redis_port,
   $redis_bind_address = $redis::params::redis_bind_address,
   $redis_max_memory = $redis::params::redis_max_memory,
+  $redis_maxmemory_policy = $redis::params::redis_maxmemory_policy,
   $redis_max_clients = $redis::params::redis_max_clients,
   $redis_timeout = $redis::params::redis_timeout,
   $redis_loglevel = $redis::params::redis_loglevel,
@@ -137,7 +138,7 @@ class redis (
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
   $restart_service_on_change = $redis::params::restart_service_on_change,
-  $manage_config_files = $redis::params::manage_config_files
+  $manage_config_file = $redis::params::manage_config_file
 ) inherits redis::params {
 
   include wget
