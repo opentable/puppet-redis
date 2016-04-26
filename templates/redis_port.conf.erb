@@ -420,7 +420,7 @@ slowlog-log-slower-than <%= @redis_slowlog_log_slower_than %>
 # You can reclaim memory used by the slow log with SLOWLOG RESET.
 slowlog-max-len <%= @redis_slowlog_max_len %>
 
-<% if @redis_notify_keyspace_events %>
+<% if @redis_notify_keyspace_events -%>
 ############################# Event notification ##############################
 
 # Redis can notify Pub/Sub clients about events happening in the key space.
@@ -467,7 +467,7 @@ slowlog-max-len <%= @redis_slowlog_max_len %>
 #  specify at least one of K or E, no events will be delivered.
 notify-keyspace-events <%= @redis_notify_keyspace_events %>
 
-<% end %>
+<% end -%>
 ############################### ADVANCED CONFIG ###############################
 
 # Hashes are encoded in a special way (much more memory efficient) when they

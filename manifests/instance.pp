@@ -148,8 +148,8 @@ define redis::instance (
     }
   }
 
-  if !empty($redis_notify_keyspace_events) and versioncmp($version, 2.8.0) >= 0 {
-    fail(“This version (${version}) of redis does not support the notify_keyspace_events config option.  Must be >= 2.8.0”)
+  if !empty($redis_notify_keyspace_events) and versioncmp($version, '2.8.0') < 0 {
+    fail("This version (${version}) of redis does not support the notify_keyspace_events config option.  Must be >= 2.8.0")
   }
 
   file { "redis-lib-port-${redis_port}":
