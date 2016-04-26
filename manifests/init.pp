@@ -95,6 +95,10 @@
 #   Upper bound on the time interval during which the slave replication buffer continuously exceeds the soft limit.
 #   Default: 60s
 #
+# [*redis_notify_keyspace_events*]
+#   Redis can notify Pub/Sub clients about events happening in the key space. Documented at http://redis.io/topics/notifications
+#   Default: undef
+#
 # === Examples
 #
 # include redis
@@ -137,6 +141,7 @@ class redis (
   $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
+  $redis_notify_keyspace_events = $redis::params::redis_notify_keyspace_events,
   $restart_service_on_change = $redis::params::restart_service_on_change,
   $manage_config_file = $redis::params::manage_config_file
 ) inherits redis::params {
@@ -169,6 +174,7 @@ class redis (
      redis_slave_output_buffer_soft_limit              => $redis_slave_output_buffer_soft_limit,
      redis_slave_output_buffer_soft_limit_max_interval => $redis_slave_output_buffer_soft_limit_max_interval,
      redis_snapshotting                                => $redis_snapshotting,
+     redis_notify_keyspace_events                      => $redis_notify_keyspace_events,
      restart_service_on_change                         => $restart_service_on_change
  }
 
