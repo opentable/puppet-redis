@@ -119,6 +119,7 @@ define redis::instance (
   $redis_slave_output_buffer_soft_limit = $redis::params::redis_slave_output_buffer_soft_limit,
   $redis_slave_output_buffer_soft_limit_max_interval = $redis::params::redis_slave_output_buffer_soft_limit_max_interval,
   $redis_snapshotting = $redis::params::redis_snapshotting,
+  $redis_notify_keyspace_events = $redis::params::redis_notify_keyspace_events,
   $restart_service_on_change = $redis::params::restart_service_on_change,
   $manage_config_file = $redis::params::manage_config_file
   ) {
@@ -145,6 +146,10 @@ define redis::instance (
     default: {
       fail("Invalid redis version, ${version}. It must match 2.4.\\d+ or 2.[68].\\d+.")
     }
+  }
+
+  if !empty($redis_notify_keyspace_events) and versioncmp($version, '2.8.0') < 0 {
+    fail("This version (${version}) of redis does not support the notify_keyspace_events config option.  Must be >= 2.8.0")
   }
 
   file { "redis-lib-port-${redis_port}":
