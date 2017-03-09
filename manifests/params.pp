@@ -32,8 +32,8 @@ class redis::params {
   $redis_slaveof_master_port = 6379
   $redis_repl_backlog_size = undef
   $redis_slave_priority = 100
-  $redis_slave_output_buffer_hard_limit = 256mb
-  $redis_slave_output_buffer_soft_limit = 64mb
+  $redis_slave_output_buffer_hard_limit = '256mb'
+  $redis_slave_output_buffer_soft_limit = '64mb'
   $redis_slave_output_buffer_soft_limit_max_interval = 60
   $redis_snapshotting = { '900' => '1', '300' => '10', '60' => '10000' }
   $redis_notify_keyspace_events = undef
