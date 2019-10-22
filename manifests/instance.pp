@@ -122,12 +122,12 @@ define redis::instance (
   $redis_notify_keyspace_events = $redis::params::redis_notify_keyspace_events,
   $restart_service_on_change = $redis::params::restart_service_on_change,
   $manage_config_file = $redis::params::manage_config_file
-  ) {
+) {
 
   # Using Exec as a dependency here to avoid dependency cyclying when doing
   # Class['redis'] -> Redis::Instance[$name]
   Exec['install-redis'] -> Redis::Instance[$name]
-  include redis
+  include ::redis
 
   $version = $redis::version
 
@@ -158,48 +158,44 @@ define redis::instance (
   }
 
   if $facts['service_provider'] == 'systemd'{
-    $service_file = "service-redis-${redis_port}" 
-    file { "${service_file}":
-      ensure  => present,
+    $service_file = "service-redis-${redis_port}"
+    file { $service_file:
+      ensure  => file,
       path    => "/etc/systemd/system/redis_${redis_port}.service",
       content => template('redis/redis.service.erb'),
       mode    => '0755',
       replace => true,
     }
   } else {
-   $service_file = "redis-init-${redis_port}" 
-   file { "${service_file}":
-     ensure  => present,
-     path    => "/etc/init.d/redis_${redis_port}",
-     mode    => '0755',
-     content => template('redis/redis.init.erb'),
-     replace => true,
-   }
+    $service_file = "redis-init-${redis_port}"
+    file { $service_file:
+      ensure  => file,
+      path    => "/etc/init.d/redis_${redis_port}",
+      mode    => '0755',
+      content => template('redis/redis.init.erb'),
+      replace => true,
+    }
   }
 
   file { "redis_port_${redis_port}.conf":
-    ensure  => present,
+    ensure  => file,
     path    => "/etc/redis/${redis_port}.conf",
     mode    => '0644',
     content => template('redis/redis_port.conf.erb'),
     replace => $manage_config_file,
   }
 
-  if $restart_service_on_change {
-    service { "redis-${redis_port}":
-      ensure    => running,
-      name      => "redis_${redis_port}",
-      enable    => true,
-      require   => [ File["redis_port_${redis_port}.conf"], File["${service_file}"], File["redis-lib-port-${redis_port}"] ],
-      subscribe => [ File["redis_port_${redis_port}.conf"], File["${service_file}"] ],
-    }
-  } else {
-    service { "redis-${redis_port}":
-      ensure    => running,
-      name      => "redis_${redis_port}",
-      enable    => true,
-      require   => [ File["redis_port_${redis_port}.conf"], File["${service_file}"], File["redis-lib-port-${redis_port}"] ],
-    }
+  $service_subscribe = $restart_service_on_change ? {
+    true    => [ File["redis_port_${redis_port}.conf"], File[$service_file] ],
+    default => [],
+  }
+
+  service { "redis-${redis_port}":
+    ensure    => running,
+    name      => "redis_${redis_port}",
+    enable    => true,
+    require   => [ File["redis_port_${redis_port}.conf"], File[$service_file], File["redis-lib-port-${redis_port}"] ],
+    subscribe => $service_subscribe,
   }
 
 }
