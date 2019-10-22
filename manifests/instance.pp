@@ -185,21 +185,15 @@ define redis::instance (
     replace => $manage_config_file,
   }
 
-  if $restart_service_on_change {
-    service { "redis-${redis_port}":
-      ensure    => running,
-      name      => "redis_${redis_port}",
-      enable    => true,
-      require   => [ File["redis_port_${redis_port}.conf"], File["${service_file}"], File["redis-lib-port-${redis_port}"] ],
-      subscribe => [ File["redis_port_${redis_port}.conf"], File["${service_file}"] ],
-    }
-  } else {
-    service { "redis-${redis_port}":
-      ensure    => running,
-      name      => "redis_${redis_port}",
-      enable    => true,
-      require   => [ File["redis_port_${redis_port}.conf"], File["${service_file}"], File["redis-lib-port-${redis_port}"] ],
-    }
+  service { "redis-${redis_port}":
+    ensure    => running,
+    name      => "redis_${redis_port}",
+    enable    => true,
+    require   => [ File["redis_port_${redis_port}.conf"], File[$service_file], File["redis-lib-port-${redis_port}"] ],
+    subscribe => $restart_service_on_change ? {
+      true => [ File["redis_port_${redis_port}.conf"], File[$service_file] ],
+      default => [],
+    },
   }
 
 }
